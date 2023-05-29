@@ -366,6 +366,13 @@
   background: var(--rating-color);
 }
 
+.next-lr,
+.current-lr,
+.next-rl,
+.current-rl {
+  transform: translate(-100% -100%);
+}
+
 .next-rl {
   position: relative;
   top: 0;

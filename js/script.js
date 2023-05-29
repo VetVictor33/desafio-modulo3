@@ -11,7 +11,6 @@ let moviesData;
 let highMovieData;
 let highMovieVideoData;
 let pageIndex = 1
-let theme = 'light';
 
 function showMovies(movies) {
     const pageOne = document.createElement('div');
@@ -164,16 +163,8 @@ function changePage(change) {
     const pageThree = document.querySelector('.page-three');
 
     function switchPage(next, current, direction) {
-        current.classList.add(`current-${direction}`);
         next.style.display = 'flex';
-        next.classList.add(`next-${direction}`);
-        setTimeout(() => {
-            current.style.display = 'none'
-        }, 1000)
-        setTimeout(() => {
-            next.classList.remove(`next-${direction}`);
-            current.classList.remove(`current-${direction}`)
-        }, 1000)
+        current.style.display = 'none'
     }
     if (change === 'next') {
         if (pageIndex === 1) {
@@ -249,26 +240,10 @@ prevBtn.addEventListener('click', () => {
     changePage('prev')
 })
 
-themeBtn.addEventListener('click', () => {
+function defineTheme() {
     const modalClose = document.querySelector('.modal__close');
-    if (theme == 'light') {
-        theme = 'dark';
-        themeBtn.src = "./assets/dark-mode.svg";
-        prevBtn.src = "./assets/arrow-left-light.svg";
-        nextBtn.src = "./assets/arrow-right-light.svg";
-        logo.src = "./assets/logo.svg";
-        modalClose.src = "./assets/close.svg"
-
-
-        root.style.setProperty("--background", "#1B2028");
-        root.style.setProperty("--text-color", "#FFFFFF");
-        root.style.setProperty("--input-color", "#FFFF");
-        root.style.setProperty("--input-background-color", "#3E434D");
-        root.style.setProperty("--bg-secondary", "#2D3440");
-        root.style.setProperty("--bg-modal:", "#2D3440");
-    } else {
-        theme = 'light';
-
+    const theme = localStorage.getItem('theme');
+    if (theme === 'light') {
         themeBtn.src = "./assets/light-mode.svg"
         prevBtn.src = "./assets/arrow-left-dark.svg";
         nextBtn.src = "./assets/arrow-right-dark.svg";
@@ -282,7 +257,32 @@ themeBtn.addEventListener('click', () => {
         root.style.setProperty("--input-background-color", "");
         root.style.setProperty("--bg-secondary", "#ededed");
         root.style.setProperty("--bg-modal:", "#ededed");
+    } else if (!theme || theme === 'dark') {
+        themeBtn.src = "./assets/dark-mode.svg";
+        prevBtn.src = "./assets/arrow-left-light.svg";
+        nextBtn.src = "./assets/arrow-right-light.svg";
+        logo.src = "./assets/logo.svg";
+        modalClose.src = "./assets/close.svg"
+
+
+        root.style.setProperty("--background", "#1B2028");
+        root.style.setProperty("--text-color", "#FFFFFF");
+        root.style.setProperty("--input-color", "#FFFF");
+        root.style.setProperty("--input-background-color", "#3E434D");
+        root.style.setProperty("--bg-secondary", "#2D3440");
+        root.style.setProperty("--bg-modal:", "#2D3440");
     }
+}
+
+themeBtn.addEventListener('click', () => {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+        localStorage.setItem('theme', 'light')
+    } else {
+        localStorage.setItem('theme', 'dark')
+    }
+    defineTheme();
 })
 
+defineTheme()
 loadMovies();
